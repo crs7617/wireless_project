@@ -1,7 +1,7 @@
 import socket
 
-HOST = "0.0.0.0"  # Listen on all interfaces
-PORT = 9999       # Arbitrary port number
+HOST = "0.0.0.0"  # Listen on all network interfaces
+PORT = 9999       
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((HOST, PORT))
@@ -18,5 +18,5 @@ while True:
         if not data:
             break
         print(f"Received: {data.decode()}")
-    
+
     client_socket.close()
