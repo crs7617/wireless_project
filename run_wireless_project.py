@@ -1,34 +1,30 @@
 import os
-import sys
+import pandas as pd
 from visualization import run_self_healing_pipeline
 
 def main():
-    """Main function to run the wireless project pipeline"""
-    print("="*80)
-    print("Wireless Network Self-Healing Project")
-    print("="*80)
+    # Check if the data file exists
+    if not os.path.exists('wmc.csv'):
+        print("Error: wmc.csv file not found. Please ensure it's in the correct location.")
+        return
     
-    # Check if required files exist
-    required_files = ["wmc.csv", "ai_model.py", "self_heal.py", "visualization.py"]
-    missing_files = [f for f in required_files if not os.path.exists(f)]
-    
-    if missing_files:
-        print("ERROR: The following required files are missing:")
-        for file in missing_files:
-            print(f"  - {file}")
-        print("\nPlease ensure all required files are in the current directory.")
-        sys.exit(1)
-    
-    print("\nAll required files found. Starting the self-healing pipeline...\n")
+    # Print information about the dataset
+    try:
+        data = pd.read_csv('wmc.csv')
+        print(f"Dataset Information:")
+        print(f"- Number of records: {len(data)}")
+        print(f"- Columns available: {', '.join(data.columns.tolist())}")
+        print(f"- Time range: {data['timestamp'].min()} to {data['timestamp'].max()}" if 'timestamp' in data.columns else "- No timestamp column found")
+        print("\nStarting self-healing pipeline...\n")
+    except Exception as e:
+        print(f"Error reading data file: {e}")
+        return
     
     # Run the self-healing pipeline
     run_self_healing_pipeline()
     
-    print("\n")
-    print("="*80)
-    print("Pipeline completed successfully!")
-    print("Results have been saved to the current directory.")
-    print("="*80)
+    print("\nWireless Network Self-Healing Project completed!")
+    print("Check the 'output' directory for visualizations and reports.")
 
 if __name__ == "__main__":
     main()
